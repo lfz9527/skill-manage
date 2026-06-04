@@ -1,0 +1,23 @@
+{
+  "skill_name": "code-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我审查一下 evals/fixtures/user_service.py 这个文件的代码质量，看看有没有命名不规范、逻辑冗余、可读性差的问题",
+      "expected_output": "审查报告应指出以下问题：1) 变量命名不清晰（d, i, u, res, tmp, flag）应使用有意义的名称；2) process_data 函数中存在重复逻辑，status/role 检查写了两次；3) calculate_discount 的条件表达式过于复杂，嵌套多层 and/or 难以阅读，建议拆分或使用查表法；4) get_user_list 函数参数名 d 无意义",
+      "files": ["evals/fixtures/user_service.py"]
+    },
+    {
+      "id": 2,
+      "prompt": "帮我做一下 Code Review，审查 evals/fixtures/order_repository.py，重点关注性能问题",
+      "expected_output": "审查报告应指出以下性能问题：1) get_orders_with_users 方法存在 N+1 查询，在循环内逐条查询 users 表；2) batch_update_status 方法名为批量但实际是逐条 UPDATE，建议使用批量 SQL；3) get_order_summary 在循环内查询 products 表，存在 N+1 问题；4) filter_and_sort_orders 存在多次不必要的列表遍历（先复制到 result，再过滤到 filtered，又用 sorted+reversed 反复转换）",
+      "files": ["evals/fixtures/order_repository.py"]
+    },
+    {
+      "id": 3,
+      "prompt": "审查 evals/fixtures/auth_handler.ts，重点检查逻辑正确性和边界条件处理",
+      "expected_output": "审查报告应指出以下逻辑问题：1) login 方法中 findUserByEmail 可能返回 null，直接访问 user.password 会抛出 TypeError；2) hasPermission 方法未检查 currentUser 是否为 null，直接访问 permissions 会崩溃；3) getDashboardData 中静默吞掉异常 return {}，调用方无法区分正常空数据和错误情况；4) getActiveUserRole 在 if (user.role) 之前虽然有赋值但未做 null 检查，逻辑不一致；5) refreshToken 存在竞态条件，连续快速调用可能导致 token 状态错乱",
+      "files": ["evals/fixtures/auth_handler.ts"]
+    }
+  ]
+}

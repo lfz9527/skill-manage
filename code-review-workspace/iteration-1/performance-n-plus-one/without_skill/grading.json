@@ -1,0 +1,29 @@
+{
+  "expectations": [
+    {
+      "text": "identifies_n_plus_one_orders",
+      "passed": true,
+      "evidence": "Matched keywords: ['N+1', 'get_orders_with_users']"
+    },
+    {
+      "text": "identifies_n_plus_one_products",
+      "passed": true,
+      "evidence": "Matched keywords: ['N+1', 'get_order_summary', 'products']"
+    },
+    {
+      "text": "identifies_batch_update_issue",
+      "passed": true,
+      "evidence": "Matched keywords: ['batch_update', '逐条', '批量']"
+    },
+    {
+      "text": "identifies_unnecessary_iterations",
+      "passed": true,
+      "evidence": "Matched keywords: ['filter_and_sort', '列表', '转换', '遍历', 'sorted', 'reversed']"
+    },
+    {
+      "text": "includes_performance_fix_suggestions",
+      "passed": false,
+      "evidence": "Matched keywords: ['IN']"
+    }
+  ]
+}

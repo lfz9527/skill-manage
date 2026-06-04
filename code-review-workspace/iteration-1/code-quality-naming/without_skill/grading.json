@@ -1,0 +1,29 @@
+{
+  "expectations": [
+    {
+      "text": "identifies_poor_naming",
+      "passed": true,
+      "evidence": "Matched keywords: ['命名', '变量', 'd', 'res']"
+    },
+    {
+      "text": "identifies_duplicate_logic",
+      "passed": true,
+      "evidence": "Matched keywords: ['重复', 'process_data', 'status', 'role']"
+    },
+    {
+      "text": "identifies_complex_condition",
+      "passed": true,
+      "evidence": "Matched keywords: ['复杂', 'calculate_discount', '条件', 'and', 'or', '优先级']"
+    },
+    {
+      "text": "uses_structured_format",
+      "passed": false,
+      "evidence": "No keywords matched"
+    },
+    {
+      "text": "includes_fix_suggestions",
+      "passed": false,
+      "evidence": "No keywords matched"
+    }
+  ]
+}
