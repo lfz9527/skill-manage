@@ -111,6 +111,25 @@ refactor | test | ci | chore | revert | merge | build | wip
 
 ### 示例
 
+**PowerShell（当前环境）：**
+
+```powershell
+$msg = @'
+feat: 版本管理设置面板与配置项更新
+
+- 抽离 SettingsDrawer 逻辑至独立组件，减少耦合
+- 修复 app.json 缺失字段导致的初始化报错（ERR-1201）
+- 引入 debounce 降低键盘事件触发频率，首页首帧 +12%
+'@
+git commit -m $msg
+```
+
+> **关键约束**：PowerShell 下必须先用 `$msg = @'...'@` 变量承接多行消息，再 `git commit -m $msg`。禁止直接在 `-m` 后拼接 here-string（如 `git commit -m @'...'@`），这会导致消息首尾被注入 `@` 字符。
+>
+> `'@` 必须顶格（列0），内容从 `@'` 下一行开始。
+
+**Bash（备用）：**
+
 ```bash
 git commit -m "feat: 版本管理设置面板与配置项更新
 
@@ -139,7 +158,7 @@ git commit -m "feat: 版本管理设置面板与配置项更新
 2. 分析并过滤                    → 从暂存列表中排除不应提交的文件
 3. git add <file1> <file2> ...   → 逐个暂存文件
 4. git status                    → 确认暂存文件正确
-5. git commit -m "<message>"     → 使用规范格式提交
+5. $msg = @'...'@; git commit -m $msg  → 使用规范格式提交（PowerShell 必须用变量承接）
 ```
 
 ## 4. 合并请求描述（修复类）
@@ -147,6 +166,7 @@ git commit -m "feat: 版本管理设置面板与配置项更新
 当 MR 标题包含 `fix:`、`bug:`、`hotfix:` 或 `修复` 时，描述**必须**包含以下结构化字段：
 
 ```
+类型：修复问题
 问题现象：[具体表现 — what the user sees going wrong]
 问题原因：[根本原因 — the root cause]
 解决方法：[修复方案 — how this MR fixes it]
