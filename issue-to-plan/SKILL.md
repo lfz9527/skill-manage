@@ -9,7 +9,34 @@ description: 根据 GitLab issue 链接自动生成开发计划。当用户提�
 
 ## 工作流
 
-### 第一步：打开 issue 页面
+### 第一步：解析 issue URL
+
+从用户提供的 GitLab issue URL 中提取：
+
+- `base_url`：如 `https://gitlab.example.com`
+- `project_path`：如 `group/subgroup/project`（URL 中 `/issues/` 前面的部分去掉 `base_url` 前缀）
+- `issue_iid`：URL 末尾的数字
+
+### 第二步：通过 GitLab API 获取 issue
+
+首先读取 `C:\Users\admin\.claude\settings.json`，提取 `env.GITLAB_TOKEN`。
+
+然后用 Bash 调用 GitLab API（不要使用 WebFetch）：
+
+```bash
+curl -s -H "PRIVATE-TOKEN: <token>" "<base_url>/api/v4/projects/<URL编码的project_path>/issues/<issue_iid>"
+```
+
+注意：`project_path` 需要用 `jq` 的 `@uri` 或手动做 URL 编码（如 `group%2Fsubgroup%2Fproject`）。
+
+**如果 API 调用成功（HTTP 200，返回 JSON 含 `title` 字段）**：
+- 直接从 JSON 提取：标题、描述、labels、assignee、milestone 等信息
+- 跳转到 **第四步**，跳过浏览器操作
+
+**如果 API 调用失败（无 token、401、404、curl 报错等）**：
+- 说明原因，降级到第三步（浏览器方式）
+
+### 第三步（降级）：浏览器打开 issue
 
 使用 Chrome DevTools MCP 打开用户提供的 issue URL：
 
@@ -19,22 +46,16 @@ new_page(url=<issue_url>)
 
 如果超时，尝试 `navigate_page` 加长 timeout。
 
-### 第二步：检查登录状态
+#### 检查登录状态
 
-页面加载完成后，`take_snapshot` 检查页面内容：
+`take_snapshot` 检查页面内容：
 
-- **如果页面 URL 已跳转到登录页**（URL 包含 `/login`、`/signin`、`/auth` 等，或页面快照中出现登录表单/按钮）→ **立即停止**，告知用户：「页面需要登录，请在浏览器中手动登录后告诉我，我再继续。」
+- **如果页面 URL 已跳转到登录页**（URL 包含 `/login`、`/signin`、`/auth`，或页面快照中出现登录表单/按钮）→ **立即停止**，告知用户：「页面需要登录，请在浏览器中手动登录后告诉我，我再继续。」
 - **如果页面正常显示 issue 内容** → 继续下一步。
 
-这一步不可跳过。只有确认已登录、能正常看到 issue 内容时，才进入下一步。
+#### 提取关键信息
 
-### 第三步：提取关键信息
-
-从 issue 快照中提取：
-- **标题**：feature 类型、涉及模块
-- **描述**：背景、目标
-- **验收标准**：涉及哪些文件、具体改动点
-- **依赖项**：上游设计文档路径、依赖的其他 issue/MR
+从 issue 快照中提取：标题、描述、验收标准、依赖项。
 
 ### 第四步：探索代码库
 
@@ -79,6 +100,7 @@ new_page(url=<issue_url>)
 
 ## 原则
 
+- **优先用 API**：有 GitLab token 就用 API，不做无意义的浏览器操作
 - **先读后写**：必须完整读取所有相关文件后再生成计划，不臆测代码内容
 - **引用真实路径**：计划中所有文件路径必须是探索后确认存在的
 - **标注不存在的依赖**：issue 提到的依赖组件/文件如果不存在，在计划中明确标注

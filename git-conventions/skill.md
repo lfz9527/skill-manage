@@ -171,9 +171,7 @@ git commit -m "feat: 版本管理设置面板与配置项更新
 - **需要修改** → 用户选择"需要修改"，然后根据用户要求调整 commit message，调整后再次展示确认，直到用户满意为止
 - **取消提交** → 用户选择"取消"，终止提交流程，不执行 commit
 
-确认时展示内容包括：
-- 完整的 commit message（主题行 + 要点列表）
-- 即将提交的文件列表
+确认时仅展示完整的 commit message（主题行 + 要点列表），无需列出提交文件或排除文件。
 
 此确认步骤**不可跳过** —— 即使用户说"直接提交"或"不用确认"，也必须执行。
 
@@ -185,8 +183,8 @@ git commit -m "feat: 版本管理设置面板与配置项更新
 类型：修复问题
 问题现象：[具体表现 — what the user sees going wrong]
 问题原因：[根本原因 — the root cause]
-解决方法：[修复方案 — how this MR fixes it]
-引入来源：commit: <commit hash> author:<该commit 的作者>
+修复方案：[修复方案 — how this MR fixes it]
+引入问题：commit: <commit hash> author:<该commit 的作者>
 ```
 
 缺少任一字段，或使用关键词但不带 `字段名：` 格式均为无效。

@@ -1,0 +1,45 @@
+{
+  "expectations": [
+    {
+      "text": "uses_rule_library",
+      "passed": true,
+      "evidence": "报告明确引用 JavaScript 规则库规则 ID：JS-E01（空 catch 块，第 21 行）、JS-A04（竞态条件，第 41 行）"
+    },
+    {
+      "text": "has_merge_recommendation",
+      "passed": true,
+      "evidence": "报告含 '⏳ 修复后合并 — 存在 P1 严重问题，修复后方可合并'（第 13 行），并明确写出公式计算：P0=0, P1=4 > 0 => 修复后合并"
+    },
+    {
+      "text": "detects_null_access",
+      "passed": true,
+      "evidence": "报告指出 3 处空指针：login 第 24 行（user.password 未判空）、hasPermission 第 46 行（currentUser.permissions 未判空）、getActiveUserRole 第 79 行（user.role 未判空）"
+    },
+    {
+      "text": "detects_silent_error_swallow",
+      "passed": true,
+      "evidence": "JS-E01 明确描述 getDashboardData 的 catch 块 '仅执行 return {}，未进行任何错误日志记录或上报...线上故障将无法追踪'"
+    },
+    {
+      "text": "detects_race_condition",
+      "passed": true,
+      "evidence": "JS-A04 详细说明 refreshToken 竞态条件：'get(token) 读取旧 token 与 set(token, newToken) 写入新 token 之间存在异步间隙'"
+    },
+    {
+      "text": "p0_p3_levels",
+      "passed": true,
+      "evidence": "报告按 P0（0 个）、P1（4 个）、P2（2 个）、P3（0 个）四级分类，每级有独立章节和格式"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "pass_rate": 1.0
+  },
+  "claims": [],
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "No suggestions, evals look solid"
+  }
+}

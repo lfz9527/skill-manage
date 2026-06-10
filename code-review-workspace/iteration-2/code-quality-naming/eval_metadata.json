@@ -1,0 +1,37 @@
+{
+  "eval_id": 1,
+  "eval_name": "code-quality-naming",
+  "prompt": "帮我审查一下 C:\\Users\\admin\\.claude\\skills\\code-review\\evals\\fixtures\\user_service.py 这个文件的代码质量",
+  "assertions": [
+    {
+      "name": "uses_rule_library",
+      "description": "报告引用了 E:\\lifangzheng\\code-review-rule\\rules\\python\\ 下的规则 ID（如 PY-Q01, PY-Q03 等）",
+      "type": "boolean"
+    },
+    {
+      "name": "has_merge_recommendation",
+      "description": "报告包含合并建议（禁止合并/修复后合并/可以合并），基于 P0-P3 公式计算",
+      "type": "boolean"
+    },
+    {
+      "name": "detects_duplicate_logic",
+      "description": "报告指出 process_data 函数中 status/role 检查的重复逻辑",
+      "type": "boolean"
+    },
+    {
+      "name": "detects_magic_numbers",
+      "description": "报告指出 calculate_discount 中硬编码数字（0.2, 0.1, 0.05）或代码中无名数字",
+      "type": "boolean"
+    },
+    {
+      "name": "p0_p3_levels",
+      "description": "报告按 P0/P1/P2/P3 四级分类问题",
+      "type": "boolean"
+    },
+    {
+      "name": "has_file_line_refs",
+      "description": "每条问题标注了文件路径和行号",
+      "type": "boolean"
+    }
+  ]
+}
