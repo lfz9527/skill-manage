@@ -184,7 +184,7 @@ git commit -m "feat: 版本管理设置面板与配置项更新
 问题现象：[具体表现 — what the user sees going wrong]
 问题原因：[根本原因 — the root cause]
 修复方案：[修复方案 — how this MR fixes it]
-引入问题：commit: <commit hash> author:<该commit 的作者>
+引入问题：commit: <commit hash> author:<该commit 的作者>；如果暂时无法定位，需要说明已尝试的定位方式和当前判断。
 ```
 
 缺少任一字段，或使用关键词但不带 `字段名：` 格式均为无效。
