@@ -1,0 +1,6 @@
+{
+  "eval_id": 2,
+  "eval_name": "mixed-intentional",
+  "prompt": "帮我看下 mixedFile.js 这个文件里哪些中文是兜底需要改的，哪些是正常的配置数据不需要改。",
+  "assertions": []
+}

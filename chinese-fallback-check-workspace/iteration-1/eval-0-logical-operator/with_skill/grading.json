@@ -1,0 +1,9 @@
+{
+  "expectations": [
+    {"text": "检测到 4 处 P0 逻辑运算符兜底", "passed": true, "evidence": "报告中 P0 表格列出 4 处：行 6（|| '页面标题'）、行 7（?? '默认副标题'）、行 14（|| '这是默认描述文本'）、行 16（|| '确认'）"},
+    {"text": "检测到 1 处 P3 JSX 中文硬编码", "passed": true, "evidence": "报告中 P3 表格列出 1 处：行 15（<span>保存成功</span>）"},
+    {"text": "每项包含文件:行号引用", "passed": true, "evidence": "每个表格行均包含 ComponentWithFallback.jsx:行号"},
+    {"text": "每项包含修复建议", "passed": true, "evidence": "每项建议列均包含具体操作（在 LanguageList.json 确认翻译后移除兜底）"},
+    {"text": "报告包含修复优先级", "passed": true, "evidence": "末尾有「修复优先级」章节，按严重程度排序"}
+  ]
+}

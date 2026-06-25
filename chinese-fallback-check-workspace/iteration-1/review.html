@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>chinese-fallback-check — Skill 评估审查 (Iteration 1)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1a1a2e; color: #e0e0e0; line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  h1 { font-size: 24px; margin-bottom: 8px; color: #7c8aff; }
+  h2 { font-size: 18px; margin: 24px 0 12px; color: #a0a8ff; border-bottom: 1px solid #333; padding-bottom: 6px; }
+  .subtitle { color: #888; margin-bottom: 24px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+  .tab { padding: 8px 20px; border: 1px solid #444; border-radius: 6px; cursor: pointer; background: #222; color: #aaa; }
+  .tab.active { background: #7c8aff; color: #fff; border-color: #7c8aff; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .card { background: #222244; border-radius: 8px; padding: 20px; margin-bottom: 16px; border: 1px solid #333; }
+  .card h3 { color: #a0c4ff; margin-bottom: 12px; }
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .config-label { font-weight: bold; padding: 4px 10px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .with-skill { background: #2d4a2d; color: #8fdf8f; }
+  .without-skill { background: #4a3d2d; color: #dfbf8f; }
+  pre { background: #111; padding: 12px; border-radius: 6px; overflow-x: auto; font-size: 13px; border: 1px solid #333; max-height: 500px; overflow-y: auto; }
+  .pass { color: #4caf50; }
+  .fail { color: #f44336; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #333; }
+  th { color: #aaa; font-weight: 600; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; }
+  .metric { background: #1a1a3e; padding: 16px; border-radius: 8px; text-align: center; }
+  .metric .value { font-size: 28px; font-weight: bold; color: #7c8aff; }
+  .metric .label { font-size: 12px; color: #888; margin-top: 4px; }
+  .feedback-box { width: 100%; min-height: 80px; background: #111; color: #e0e0e0; border: 1px solid #444; border-radius: 6px; padding: 10px; margin-top: 8px; font-family: inherit; }
+  .nav { display: flex; justify-content: center; gap: 12px; margin: 20px 0; }
+  .nav button { padding: 8px 16px; border: 1px solid #444; border-radius: 6px; cursor: pointer; background: #222; color: #e0e0e0; }
+  .nav button:hover { background: #333; }
+  .eval-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .eval-nav-btn { padding: 6px 14px; border: 1px solid #444; border-radius: 6px; cursor: pointer; background: #222; color: #aaa; }
+  .eval-nav-btn.active { background: #7c8aff; color: #fff; border-color: #7c8aff; }
+  #eval-display { display: none; }
+  #eval-display.active { display: block; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🔍 chinese-fallback-check — 评估审查</h1>
+<p class="subtitle">Iteration 1 | 3 test cases × 2 configurations = 6 runs | 2026-06-18</p>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('outputs')">📄 Outputs</div>
+  <div class="tab" onclick="switchTab('benchmark')">📊 Benchmark</div>
+</div>
+
+<!-- OUTPUTS TAB -->
+<div id="tab-outputs" class="tab-content active">
+  <div class="eval-nav">
+    <button class="eval-nav-btn active" onclick="showEval(0)">Eval 0: 逻辑运算符兜底</button>
+    <button class="eval-nav-btn" onclick="showEval(1)">Eval 1: 函数默认参数</button>
+    <button class="eval-nav-btn" onclick="showEval(2)">Eval 2: 混合/区分识别</button>
+  </div>
+
+  <!-- Eval 0 -->
+  <div id="eval-0" class="eval-display active">
+    <div class="card">
+      <h3>Prompt</h3>
+      <p>我刚刚修改了 ComponentWithFallback.jsx 文件，帮我检查一下里面有没有中文兜底的问题。</p>
+    </div>
+    <div class="comparison">
+      <div class="card">
+        <span class="config-label with-skill">with_skill</span>
+        <pre>## 中文兜底检查报告
+
+检查范围：`ComponentWithFallback.jsx`
+
+### 发现 5 处中文兜底
+
+#### 🔴 严重 -- 逻辑运算符兜底（共 4 处）
+
+| # | 文件:行号 | 代码片段 | 建议 |
+|---|----------|---------|------|
+| 1 | :6 | language.pageTitle || '页面标题' | 移除兜底 |
+| 2 | :7 | language.subtitle ?? '默认副标题' | 移除兜底 |
+| 3 | :14 | language.description || '这是默认描述文本' | 移除兜底 |
+| 4 | :16 | language.confirm || '确认' | 移除兜底 |
+
+#### 🟢 提示 -- JSX 中文硬编码（共 1 处）
+
+| 1 | :15 | span保存成功/span | 改用 language.saveSuccess |</pre>
+        <p>✅ All 5 assertions passed | 29,307 tokens | 41.1s</p>
+        <textarea class="feedback-box" placeholder="反馈意见..."></textarea>
+      </div>
+      <div class="card">
+        <span class="config-label without-skill">without_skill</span>
+        <pre>总体概况: P0(严重) 4处 + P3(低) 1处 = 5处
+
+P0 逻辑运算符兜底（4处）：
+  L6:  language.pageTitle || '页面标题'
+  L7:  language.subtitle ?? '默认副标题'
+  L14: language.description || '这是默认描述文本'
+  L16: language.confirm || '确认'
+
+P3 JSX中文硬编码（1处）：
+  L15: span保存成功/span → 改为 language.saveSuccess</pre>
+        <p>✅ All 5 assertions passed | 28,202 tokens | 43.5s</p>
+        <textarea class="feedback-box" placeholder="反馈意见..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Eval 1 -->
+  <div id="eval-1" class="eval-display">
+    <div class="card">
+      <h3>Prompt</h3>
+      <p>我刚写了一个工具函数文件 utilsWithDefaults.js，里面有一些默认参数，帮我跑一下中文兜底检查。</p>
+    </div>
+    <div class="comparison">
+      <div class="card">
+        <span class="config-label with-skill">with_skill</span>
+        <pre>## 中文兜底检查报告
+
+### 发现 6 处中文兜底
+
+严重 -- 三元表达式回退（3处）：
+  L16: user.nickname ? user.nickname : '匿名用户'
+  L20: code === 0 ? '成功' : '未知错误' (计2处)
+
+建议 -- 函数默认参数（4处）：
+  L2:  msg = '操作成功'
+  L6:  name = '未命名用户', role = '普通用户'
+  L10: format = '默认格式'
+
+修复优先级: 文件未引入i18n模块</pre>
+        <p>✅ All 5 assertions passed | 30,417 tokens | 81.9s</p>
+        <textarea class="feedback-box" placeholder="反馈意见..."></textarea>
+      </div>
+      <div class="card">
+        <span class="config-label without-skill">without_skill</span>
+        <pre>P1 三元表达式中文回退（2处）：
+  L16: '匿名用户'
+  L20: '成功' / '未知错误'
+
+P2 函数默认参数中文（4处）：
+  L2:  '操作成功'
+  L6:  '未命名用户' + '普通用户'
+  L10: '默认格式'
+
+注意：本文件未引入i18n模块</pre>
+        <p>✅ All 5 assertions passed | 31,001 tokens | 91.4s</p>
+        <textarea class="feedback-box" placeholder="反馈意见..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Eval 2 -->
+  <div id="eval-2" class="eval-display">
+    <div class="card">
+      <h3>Prompt</h3>
+      <p>帮我看下 mixedFile.js 这个文件里哪些中文是兜底需要改的，哪些是正常的配置数据不需要改。</p>
+    </div>
+    <div class="comparison">
+      <div class="card">
+        <span class="config-label with-skill">with_skill</span>
+        <pre>## 发现 2 处中文兜底
+
+🔴 严重 -- 逻辑运算符兜底（2处）：
+  L13: input || '未识别命令'
+  L14: DEFAULT_COMMANDS[command] || '未知指令'
+
+排除项说明（正常配置数据，无需修改）：
+  L5-8: DEFAULT_COMMANDS = { forward:'前进', backward:'后退',
+         left:'左转', right:'右转' }
+  原因：第3行注释标明"中文是领域数据，非兜底"
+
+另：L19 ? cmd : 'Unknown' 为英文兜底，不含中文，不触发</pre>
+        <p>✅ All 5 assertions passed | 31,811 tokens | 89.7s</p>
+        <textarea class="feedback-box" placeholder="反馈意见..."></textarea>
+      </div>
+      <div class="card">
+        <span class="config-label without-skill">without_skill</span>
+        <pre>P0 逻辑运算符回退（2处，需修改）：
+  L13: '未识别命令' → t('voice.unrecognized_command')
+  L14: '未知指令' → t('voice.unknown_command')
+
+正常配置数据（4个字段，无需修改）：
+  DEFAULT_COMMANDS: 前进/后退/左转/右转
+  理由：注释标明、领域数据映射、非UI文案
+
+L19 'Unknown' 英文回退 → 建议一并国际化</pre>
+        <p>✅ All 5 assertions passed | 28,008 tokens | 76.9s</p>
+        <textarea class="feedback-box" placeholder="反馈意见..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button onclick="submitFeedback()">💾 Submit All Reviews</button>
+  </div>
+</div>
+
+<!-- BENCHMARK TAB -->
+<div id="tab-benchmark" class="tab-content">
+  <h2>Summary</h2>
+  <div class="summary-grid">
+    <div class="metric"><div class="value">100%</div><div class="label">with_skill Pass Rate</div></div>
+    <div class="metric"><div class="value">100%</div><div class="label">without_skill Pass Rate</div></div>
+    <div class="metric"><div class="value">30,512</div><div class="label">with_skill Avg Tokens</div></div>
+    <div class="metric"><div class="value">29,070</div><div class="label">without_skill Avg Tokens</div></div>
+    <div class="metric"><div class="value">70.9s</div><div class="label">with_skill Avg Duration</div></div>
+    <div class="metric"><div class="value">70.6s</div><div class="label">without_skill Avg Duration</div></div>
+  </div>
+
+  <h2>Per-Eval Breakdown</h2>
+  <table>
+    <tr><th>Eval</th><th>Config</th><th>Pass Rate</th><th>Tokens</th><th>Duration</th></tr>
+    <tr><td rowspan="2">0: logical-operator</td><td>with_skill</td><td>5/5</td><td>29,307</td><td>41.1s</td></tr>
+    <tr><td>without_skill</td><td>5/5</td><td>28,202</td><td>43.5s</td></tr>
+    <tr><td rowspan="2">1: function-defaults</td><td>with_skill</td><td>5/5</td><td>30,417</td><td>81.9s</td></tr>
+    <tr><td>without_skill</td><td>5/5</td><td>31,001</td><td>91.4s</td></tr>
+    <tr><td rowspan="2">2: mixed-intentional</td><td>with_skill</td><td>5/5</td><td>31,811</td><td>89.7s</td></tr>
+    <tr><td>without_skill</td><td>5/5</td><td>28,008</td><td>76.9s</td></tr>
+  </table>
+
+  <h2>Analyst Observations</h2>
+  <ul>
+    <li>Both configurations achieve 100% pass rate — detection accuracy is identical</li>
+    <li>Token overhead with skill: ~+5% (expected from loading SKILL.md)</li>
+    <li>Duration is comparable — no meaningful latency added</li>
+    <li>Primary value of skill: <strong>consistent report format</strong> and <strong>structured severity classification</strong></li>
+    <li>Both configs correctly distinguish intentional config data from fallback Chinese (eval-2)</li>
+    <li>Without-skill runs produce slightly varied formats; with-skill runs follow the defined template</li>
+  </ul>
+</div>
+
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector(`[onclick="switchTab('${name}')"]`).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+function showEval(n) {
+  document.querySelectorAll('.eval-nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.eval-display').forEach(d => d.classList.remove('active'));
+  document.querySelector(`[onclick="showEval(${n})"]`).classList.add('active');
+  document.getElementById('eval-' + n).classList.add('active');
+}
+function submitFeedback() {
+  const reviews = [];
+  document.querySelectorAll('.eval-display').forEach((display, i) => {
+    const boxes = display.querySelectorAll('.feedback-box');
+    reviews.push({run_id: 'eval-' + i + '-with_skill', feedback: boxes[0]?.value || '', timestamp: new Date().toISOString()});
+    reviews.push({run_id: 'eval-' + i + '-without_skill', feedback: boxes[1]?.value || '', timestamp: new Date().toISOString()});
+  });
+  const json = JSON.stringify({reviews, status: 'complete'}, null, 2);
+  const blob = new Blob([json], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'feedback.json';
+  a.click();
+  alert('feedback.json 已下载，请将其放到 workspace 目录下。');
+}
+</script>
+</body>
+</html>

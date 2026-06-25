@@ -1,0 +1,23 @@
+{
+  "skill_name": "chinese-fallback-check",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "我刚刚修改了 ComponentWithFallback.jsx 文件，帮我检查一下里面有没有中文兜底的问题。文件路径：C:\\Users\\admin\\.claude\\skills\\chinese-fallback-check-workspace\\test-fixtures\\ComponentWithFallback.jsx",
+      "expected_output": "应检测出：3处 P0 逻辑运算符兜底（|| '页面标题'、?? '默认副标题'、|| '这是默认描述文本'、|| '确认'），1处 P3 JSX中文硬编码（保存成功），共计5处中文兜底。",
+      "files": ["C:\\Users\\admin\\.claude\\skills\\chinese-fallback-check-workspace\\test-fixtures\\ComponentWithFallback.jsx"]
+    },
+    {
+      "id": 1,
+      "prompt": "我刚写了一个工具函数文件 utilsWithDefaults.js，里面有一些默认参数，帮我跑一下中文兜底检查。路径：C:\\Users\\admin\\.claude\\skills\\chinese-fallback-check-workspace\\test-fixtures\\utilsWithDefaults.js",
+      "expected_output": "应检测出：5处 P2 函数默认参数中文（'操作成功'、'未命名用户'、'普通用户'、'默认格式'），2处 P1 三元表达式中文回退（'匿名用户'、'成功'、'未知错误'），共计至少7处中文兜底。",
+      "files": ["C:\\Users\\admin\\.claude\\skills\\chinese-fallback-check-workspace\\test-fixtures\\utilsWithDefaults.js"]
+    },
+    {
+      "id": 2,
+      "prompt": "帮我看下 mixedFile.js 这个文件里哪些中文是兜底需要改的，哪些是正常的配置数据不需要改。文件路径：C:\\Users\\admin\\.claude\\skills\\chinese-fallback-check-workspace\\test-fixtures\\mixedFile.js",
+      "expected_output": "应区分：语音命令配置中的中文（前进、后退、左转、右转）是领域数据不应报告；但逻辑运算符兜底（'未识别命令'、'未知指令'）应作为 P0 报告。需体现出区分能力。",
+      "files": ["C:\\Users\\admin\\.claude\\skills\\chinese-fallback-check-workspace\\test-fixtures\\mixedFile.js"]
+    }
+  ]
+}

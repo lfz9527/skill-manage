@@ -1,0 +1,6 @@
+{
+  "eval_id": 0,
+  "eval_name": "logical-operator-fallback",
+  "prompt": "我刚刚修改了 ComponentWithFallback.jsx 文件，帮我检查一下里面有没有中文兜底的问题。",
+  "assertions": []
+}
