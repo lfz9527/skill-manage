@@ -247,8 +247,8 @@ git branch --show-current
 # 获取当前用户
 git config user.name
 # 确定目标分支（按优先级检测远程是否存在）
+git ls-remote --heads origin dev   # 存在则用 origin/dev
 git ls-remote --heads origin beta   # 存在则用 origin/beta
-git ls-remote --heads origin main   # 其次 origin/main
 git ls-remote --heads origin master # 最后 origin/master
 # 仅筛选当前用户的提交（含完整提交信息和变更文件）
 git log <target>..HEAD --no-merges --author="<user.name>" --format="%H %s%n%b"
@@ -258,7 +258,7 @@ git log <target>..HEAD --no-merges --author="<user.name>" --stat
 git diff <target>..HEAD
 ```
 
-目标分支按 `origin/beta` → `origin/main` → `origin/master` 优先级检测，使用当前项目中第一个存在的远程分支。`--author` 仅匹配当前 `git config user.name`。
+目标分支按 `origin/dev` → `origin/beta` → `origin/master` 优先级检测，使用当前项目中第一个存在的远程分支。`--author` 仅匹配当前 `git config user.name`。
 
 **仅提取当前用户的提交生成 MR 描述**，忽略其他协作者的提交。`--author` 参数匹配 `git config user.name` 的返回值。
 
@@ -273,7 +273,7 @@ git diff <target>..HEAD
 ```
 1. git branch --show-current                              → 获取当前分支名，提取 issue 号
 2. git config user.name                                  → 获取当前用户标识
-3. git ls-remote --heads origin beta/main/master         → 检测存在的目标分支
+3. git ls-remote --heads origin dev/beta/master         → 检测存在的目标分支
 4. git log <target>..HEAD --no-merges                    → 读取当前用户提交（含完整正文）
    --author="<user.name>" --format="%H %s%n%b"
 5. git log <target>..HEAD --no-merges                    → 读取各提交变更文件列表
