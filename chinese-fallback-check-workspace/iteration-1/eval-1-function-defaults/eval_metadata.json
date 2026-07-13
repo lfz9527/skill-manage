@@ -1,6 +1,0 @@
-{
-  "eval_id": 1,
-  "eval_name": "function-defaults",
-  "prompt": "我刚写了一个工具函数文件 utilsWithDefaults.js，里面有一些默认参数，帮我跑一下中文兜底检查。",
-  "assertions": []
-}

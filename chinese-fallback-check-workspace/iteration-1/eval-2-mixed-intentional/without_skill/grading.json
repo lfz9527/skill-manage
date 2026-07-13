@@ -1,9 +1,0 @@
-{
-  "expectations": [
-    {"text": "检测到 2 处 P0 逻辑运算符兜底", "passed": true, "evidence": "报告中 P0 列出 2 处：行 13（'未识别命令'）和行 14（'未知指令'）"},
-    {"text": "正确排除 DEFAULT_COMMANDS 配置数据", "passed": true, "evidence": "报告有「正常配置数据」章节，列出 4 个字段并给出 4 条理由说明为何无需修改"},
-    {"text": "每项包含修复建议", "passed": true, "evidence": "每项兜底均有具体建议（改为 t('voice.xxx')）"},
-    {"text": "报告区分兜底与正常配置数据", "passed": true, "evidence": "报告分 P0 兜底和正常配置数据两个章节，且有总结表格区分处理方式"},
-    {"text": "边界情况处理（英文兜底也提示）", "passed": true, "evidence": "Line 19 的 'Unknown' 虽非中文兜底但仍给出建议一并国际化，体现周全性"}
-  ]
-}
