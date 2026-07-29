@@ -69,3 +69,23 @@ curl -s -H "PRIVATE-TOKEN: {TOKEN}" "{API_URL}/api/v4/users/{id}/events?after={s
 - 忽略具体条目细节，只概括趋势
 - 使用简洁中文
 - 月报可按模块/方向分组概括
+
+**标签说明（可作为总结中定性描述的参考）：**
+
+| 标签 | 含义 |
+|---|---|
+| `#thumbs_up` | 高度认可：提前完成、优秀代码等 |
+| `#good` | 一般认可 |
+| `#thumbs_down` | 批评：违规、延期、错误代码等 |
+| `#thumbs_warn` / `#warn` | 警告 |
+| `#work` | 工作量证明 |
+| `#help` | 帮助他人 |
+| `#emptywork` | 当天无工作进展 |
+| `#delay` | 工单超期 |
+| `#qa` | QA 工作 |
+| `#techsupport` | 技术支持 |
+| `#plan` | 编写开发计划 |
+| `#push_1` | 简单推进（提醒他人） |
+| `#push_2` | 沟通推进（解释概念） |
+| `#push_3` | 提供建议推进 |
+| `#push_work` | 推动完成项目环节 |
