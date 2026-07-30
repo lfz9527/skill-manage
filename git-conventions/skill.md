@@ -68,7 +68,7 @@ lfz/ui/login_form_animation
 创建分支前，检查是否已存在同名分支：
 
 ```bash
-git rev-parse --verify --quiet <branch> 2>$null
+git rev-parse --verify --quiet <branch> 2>/dev/null
 ```
 
 如果已存在，警告用户并建议替代关键字。
@@ -111,7 +111,7 @@ refactor | test | ci | chore | revert | merge | build | wip
 
 ### 示例
 
-**PowerShell（当前环境）：**
+**PowerShell：**
 
 ```powershell
 $msg = @'
@@ -128,7 +128,7 @@ git commit -m $msg
 >
 > `'@` 必须顶格（列0），内容从 `@'` 下一行开始。
 
-**Bash（备用）：**
+**Bash：**
 
 ```bash
 git commit -m "feat: 版本管理设置面板与配置项更新
@@ -137,6 +137,10 @@ git commit -m "feat: 版本管理设置面板与配置项更新
 - 修复 app.json 缺失字段导致的初始化报错（ERR-1201）
 - 引入 debounce 降低键盘事件触发频率，首页首帧 +12%"
 ```
+
+> **关键约束**：Bash 下直接在 `-m` 后使用双引号包裹多行字符串即可，内容换行即视为多行。**禁止**在 Bash 下使用 PowerShell 的 `@'...'@` here-string 语法，这会导致提交信息包含 `@` 字符。
+>
+> 双引号在内容末尾单独一行闭合。
 
 ### 提交前自动过滤
 
@@ -160,7 +164,9 @@ git commit -m "feat: 版本管理设置面板与配置项更新
 4. git status                    → 确认暂存文件正确
 5. 生成提交信息                  → 按规范格式生成完整的 commit message
 6. 用户确认                      → 将生成的 commit message 展示给用户确认
-7. $msg = @'...'@; git commit -m $msg  → 用户确认后执行提交（PowerShell 必须用变量承接）
+7. 执行提交                      → 用户确认后，根据检测到的 Shell 环境执行对应命令：
+   - PowerShell（pwsh/powershell）：$msg = @'...'@; git commit -m $msg（变量承接）
+   - Bash（其余环境）：git commit -m "..."（双引号包裹多行字符串）
 ```
 
 ### 提交前确认
@@ -299,3 +305,4 @@ git diff <target>..HEAD
 | 功能类 MR | 必须包含：类型、需求目标、需求原因、实现方案 |
 | 来源提交 | 使用 `git log -S` / `git blame` — 必须在 beta/master 上 |
 | 责任人 | 来源提交的作者，通过 `git log -1 --format='%an <%ae>'` 获取 |
+| 环境适配 | PowerShell 用 `$msg = @'...'@; git commit -m $msg`；Bash 用 `git commit -m "..."` |
